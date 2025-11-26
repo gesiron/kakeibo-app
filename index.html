@@ -12,9 +12,8 @@
       align-items: center;
     }
     #charts canvas {
-      width: 95% !important;   /* 横幅は画面に合わせる */
-      height: auto !important; /* 高さは自動調整 */
-      aspect-ratio: 3 / 2;     /* ← 縦幅を少し長めに（16/9より縦広） */
+      width: 95% !important;
+      height: 400px !important; /* ← 縦幅を長めに確保 */
       margin: 15px 0;
     }
     h1 {
@@ -27,7 +26,7 @@
       h1 { font-size: 2em; }
       label, button, div { font-size: 1.2em; }
       #charts canvas {
-        aspect-ratio: 4 / 3;   /* スマホではさらに縦長にして見やすく */
+        height: 300px !important; /* ← スマホでは少し小さめに */
       }
     }
   </style>
