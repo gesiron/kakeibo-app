@@ -12,8 +12,9 @@
       align-items: center;
     }
     #charts canvas {
-      width: 95% !important;   /* ← 幅を少し縮める */
-      height: 350px !important; /* ← 高さを調整（500px→350px） */
+      width: 95% !important;   /* 横幅は画面に合わせる */
+      height: auto !important; /* 高さは自動調整 */
+      aspect-ratio: 16 / 9;    /* PCでは横長 */
       margin: 15px 0;
     }
     h1 {
@@ -25,6 +26,9 @@
     @media (max-width: 600px) {
       h1 { font-size: 2em; }
       label, button, div { font-size: 1.2em; }
+      #charts canvas {
+        aspect-ratio: 4 / 3;   /* スマホでは縦を少し広め */
+      }
     }
   </style>
 </head>
