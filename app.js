@@ -57,12 +57,12 @@ async function loadExpenses() {
   container.innerHTML = "";
 
   let dataList = [];
-  if (month === "all") {
-    Object.values(monthlyData).forEach(arr => dataList.push(...arr));
-    dataList = dataList.filter(d => d.type === "記録");
-  } else {
-    dataList = monthlyData[month] || [];
-  }
+ if (month === "all") {
+  // 全体では一覧を表示しない
+  dataList = [];   // ← 空にする
+} else {
+  dataList = monthlyData[month] || [];
+}
 
   let total = 0;
   dataList.forEach(data => {
