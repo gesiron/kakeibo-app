@@ -52,16 +52,14 @@ async function loadExpenses() {
   });
 
   showMonthData("all", monthlyData);
-}
-
-function showMonthData(month, monthlyData) {
+}function showMonthData(month, monthlyData) {
   const container = document.getElementById("monthData");
   container.innerHTML = "";
 
   let dataList = [];
   if (month === "all") {
     Object.values(monthlyData).forEach(arr => dataList.push(...arr));
-    dataList = dataList.filter(d => d.type === "記録"); // ← 履歴完全非表示
+    dataList = dataList.filter(d => d.type === "記録"); // 全体表示では履歴非表示
   } else {
     dataList = monthlyData[month] || [];
   }
@@ -73,6 +71,8 @@ function showMonthData(month, monthlyData) {
     const delBtn = document.createElement("button");
     delBtn.textContent = "削除";
     delBtn.onclick = async () => {
+      const ok = confirm("この記録を削除してもよろしいですか？"); // ← 確認ダイアログ
+      if (!ok) return;
       await deleteDoc(doc(db, "expenses", data.id));
       loadExpenses();
     };
@@ -95,9 +95,7 @@ function showMonthData(month, monthlyData) {
   }
 }
 
-let chartInstances = {};
-
-function drawCharts(monthlyData) {
+let chartInstances = {};function drawCharts(monthlyData) {
   const months = Object.keys(monthlyData).sort();
 
   const sumBy = (month, predicate) =>
@@ -112,9 +110,10 @@ function drawCharts(monthlyData) {
     { id: "chart-loan", label: "住宅ローン", category: "住宅ローン", color: "teal" },
     { id: "chart-water", label: "水道", category: "水道", color: "dodgerblue" },
     { id: "chart-kochi", label: "こち", category: "こち", color: "olive" },
-    { id: "chart-electric", label: "電気", category: "電気", color: "orange" } // ← 電気グラフ追加
+    { id: "chart-electric", label: "電気", category: "電気", color: "orange" }
   ];
 
+  // 各カテゴリグラフ
   categories.forEach(({ id, label, category, color }) => {
     const totals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === category));
     if (chartInstances[id]) chartInstances[id].destroy();
@@ -137,98 +136,40 @@ function drawCharts(monthlyData) {
         }
       }
     });
-  });  const balanceTotals = months.map(m => {
-    const income = sumBy(m, d => d.type === "収入");
-    const expense = sumBy(m, d => d.type === "支出");
-    return income - expense;
   });
 
-  if (chartInstances["chart-balance"]) chartInstances["chart-balance"].destroy();
-  const ctxBalance = document.getElementById("chart-balance").getContext("2d");
-  chartInstances["chart-balance"] = new Chart(ctxBalance, {
-    type: "line",
-    data: {
-      labels: months,
-      datasets: [{ label: "収支（収入−支出）", data: balanceTotals, borderColor: "black", fill: false }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: { display: true, text: "収支の月次推移", font: { size: 39 } },
-        legend: { labels: { font: { size: 30 } } }
-      },
-      scales: {
-        x: { ticks: { font: { size: 27 } } },
-        y: { ticks: { font: { size: 27 } } }
-      }
-    }
-  });
-
+  // 収支・支出・副収入・貯金グラフ
+  const balanceTotals = months.map(m => sumBy(m, d => d.type === "収入") - sumBy(m, d => d.type === "支出"));
   const expenseTotals = months.map(m => sumBy(m, d => d.type === "支出"));
-  if (chartInstances["chart-expense"]) chartInstances["chart-expense"].destroy();
-  const ctxExpense = document.getElementById("chart-expense").getContext("2d");
-  chartInstances["chart-expense"] = new Chart(ctxExpense, {
-    type: "line",
-    data: {
-      labels: months,
-      datasets: [{ label: "支出合計", data: expenseTotals, borderColor: "darkgray", fill: false }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: { display: true, text: "支出の月次推移", font: { size: 39 } },
-        legend: { labels: { font: { size: 30 } } }
-      },
-      scales: {
-        x: { ticks: { font: { size: 27 } } },
-        y: { ticks: { font: { size: 27 } } }
-      }
-    }
-  });
-
   const sideTotals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === "副収入"));
-  if (chartInstances["chart-side"]) chartInstances["chart-side"].destroy();
-  const ctxSide = document.getElementById("chart-side").getContext("2d");
-  chartInstances["chart-side"] = new Chart(ctxSide, {
-    type: "line",
-    data: {
-      labels: months,
-      datasets: [{ label: "副収入推移", data: sideTotals, borderColor: "green", fill: false }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: { display: true, text: "副収入の月次推移", font: { size: 39 } },
-        legend: { labels: { font: { size: 30 } } }
-      },
-      scales: {
-        x: { ticks: { font: { size: 27 } } },
-        y: { min: 0, ticks: { font: { size: 27 } } }
-      }
-    }
-  });
-
   const savingTotals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === "貯金合計"));
-  if (chartInstances["chart-saving"]) chartInstances["chart-saving"].destroy();
-  const ctxSaving = document.getElementById("chart-saving").getContext("2d");
-  chartInstances["chart-saving"] = new Chart(ctxSaving, {
-    type: "line",
-    data: {
-      labels: months,
-      datasets: [{ label: "貯金合計", data: savingTotals, borderColor: "blue", fill: false }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: { display: true, text: "貯金合計の月次推移", font: { size: 39 } },
-        legend: { labels: { font: { size: 30 } } }
-      },
-      scales: {
-        x: { ticks: { font: { size: 27 } } },
-        y: { min: 0, ticks: { font: { size: 27 } } }
-      }
-    }
-  });
-} // ← drawCharts 関数の閉じ
 
-loadExpenses(); // ← アプリ起動時に読み込み
+  const chartDefs = [
+    { id: "chart-balance", label: "収支（収入−支出）", data: balanceTotals, color: "black", title: "収支の月次推移" },
+    { id: "chart-expense", label: "支出合計", data: expenseTotals, color: "darkgray", title: "支出の月次推移" },
+    { id: "chart-side", label: "副収入推移", data: sideTotals, color: "green", title: "副収入の月次推移" },
+    { id: "chart-saving", label: "貯金合計", data: savingTotals, color: "blue", title: "貯金合計の月次推移" }
+  ];
+
+  chartDefs.forEach(({ id, label, data, color, title }) => {
+    if (chartInstances[id]) chartInstances[id].destroy();
+    new Chart(document.getElementById(id).getContext("2d"), {
+      type: "line",
+      data: { labels: months, datasets: [{ label, data, borderColor: color, fill: false }] },
+      options: {
+        responsive: true,
+        plugins: {
+          title: { display: true, text: title, font: { size: 39 } },
+          legend: { labels: { font: { size: 30 } } }
+        },
+        scales: {
+          x: { ticks: { font: { size: 27 } } },
+          y: { min: 0, ticks: { font: { size: 27 } } }
+        }
+      }
+    });
+  });
+}
+
+// アプリ起動時にデータ読み込み
+loadExpenses();
