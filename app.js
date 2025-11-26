@@ -95,7 +95,9 @@ async function loadExpenses() {
   }
 }
 
-let chartInstances = {};function drawCharts(monthlyData) {
+let chartInstances = {};
+
+function drawCharts(monthlyData) {
   const months = Object.keys(monthlyData).sort();
 
   const sumBy = (month, predicate) =>
@@ -103,18 +105,25 @@ let chartInstances = {};function drawCharts(monthlyData) {
       .filter(predicate)
       .reduce((sum, d) => sum + (Number(d.amount) || 0), 0);
 
+  // recordOnly=true は「記録専用カテゴリ」
   const categories = [
-    { id: "chart-card", label: "カード", category: "カード", color: "red" },
-    { id: "chart-cash", label: "現金", category: "現金", color: "brown" },
-    { id: "chart-insurance", label: "保険", category: "保険", color: "purple" },
-    { id: "chart-loan", label: "住宅ローン", category: "住宅ローン", color: "teal" },
-    { id: "chart-water", label: "水道", category: "水道", color: "dodgerblue" },
-    { id: "chart-kochi", label: "こち", category: "こち", color: "olive" },
-    { id: "chart-electric", label: "電気", category: "電気", color: "orange" }
+    { id: "chart-card", label: "カード", category: "カード", color: "red", recordOnly: false },
+    { id: "chart-cash", label: "現金", category: "現金", color: "brown", recordOnly: false },
+    { id: "chart-insurance", label: "保険", category: "保険", color: "purple", recordOnly: false },
+    { id: "chart-loan", label: "住宅ローン", category: "住宅ローン", color: "teal", recordOnly: false },
+    { id: "chart-electric", label: "電気", category: "電気", color: "orange", recordOnly: false },
+    { id: "chart-kochi", label: "こち", category: "こち", color: "olive", recordOnly: true },
+    { id: "chart-water", label: "水道", category: "水道", color: "dodgerblue", recordOnly: true }
   ];
 
-  categories.forEach(({ id, label, category, color }) => {
-    const totals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === category));
+  categories.forEach(({ id, label, category, color, recordOnly }) => {
+    // recordOnly に応じて条件を切り替え
+    const predicate = recordOnly
+      ? (d) => d.type === "記録" && d.category === category   // 記録専用カテゴリ
+      : (d) => d.category === category && d.type !== "記録";  // 収入/支出カテゴリ
+
+    const totals = months.map(m => sumBy(m, predicate));
+
     if (chartInstances[id]) chartInstances[id].destroy();
     const ctx = document.getElementById(id).getContext("2d");
     chartInstances[id] = new Chart(ctx, {
@@ -139,10 +148,10 @@ let chartInstances = {};function drawCharts(monthlyData) {
             }
           },
           y: {
+            beginAtZero: true,
             ticks: {
               font: { size: 10 },
               autoSkip: false,
-              stepSize: 1000,
               maxTicksLimit: 12
             }
           }
