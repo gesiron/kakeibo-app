@@ -126,23 +126,24 @@ let chartInstances = {};function drawCharts(monthlyData) {
       options: {
         responsive: true,
         plugins: {
-          title: { display: true, text: `${label}の月次推移`, font: { size: 24 } },
-          legend: { labels: { font: { size: 16 } } }
+          title: { display: true, text: `${label}の月次推移`, font: { size: 20 } },
+          legend: { labels: { font: { size: 14 } } }
         },
         scales: {
           x: {
             ticks: {
-              font: { size: 14 },
+              font: { size: 10 },
               autoSkip: false,
-              maxTicksLimit: 12
+              maxRotation: 90,
+              minRotation: 45
             }
           },
           y: {
             ticks: {
-              font: { size: 14 },
+              font: { size: 10 },
               autoSkip: false,
               stepSize: 1000,
-              maxTicksLimit: 10
+              maxTicksLimit: 12
             }
           }
         }
@@ -168,31 +169,5 @@ let chartInstances = {};function drawCharts(monthlyData) {
       options: {
         responsive: true,
         plugins: {
-          title: { display: true, text: title, font: { size: 24 } },
-          legend: { labels: { font: { size: 16 } } }
-        },
-        scales: {
-          x: {
-            ticks: {
-              font: { size: 14 },
-              autoSkip: false,
-              maxTicksLimit: 12
-            }
-          },
-          y: {
-            min: 0,
-            ticks: {
-              font: { size: 14 },
-              autoSkip: false,
-              stepSize: 1000,
-              maxTicksLimit: 10
-            }
-          }
-        }
-      }
-    });
-  });
-}
-
-// アプリ起動時にデータ読み込み
-loadExpenses();
+          title: { display: true, text: title, font: { size: 20 } },
+          legend: { labels: { font: { size: 14 } } }
