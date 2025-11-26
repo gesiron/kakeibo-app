@@ -149,7 +149,7 @@ let chartInstances = {};function drawCharts(monthlyData) {
         }
       }
     });
-  });  const balanceTotals = months.map(m => sumBy(m, d => d.type === "収入") - sumBy(m, d => d.type === "支出"));
+  });   const balanceTotals = months.map(m => sumBy(m, d => d.type === "収入") - sumBy(m, d => d.type === "支出"));
   const expenseTotals = months.map(m => sumBy(m, d => d.type === "支出"));
   const sideTotals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === "副収入"));
   const savingTotals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === "貯金合計"));
@@ -171,3 +171,30 @@ let chartInstances = {};function drawCharts(monthlyData) {
         plugins: {
           title: { display: true, text: title, font: { size: 20 } },
           legend: { labels: { font: { size: 14 } } }
+        },
+        scales: {
+          x: {
+            ticks: {
+              font: { size: 10 },
+              autoSkip: false,
+              maxRotation: 90,
+              minRotation: 45
+            }
+          },
+          y: {
+            min: 0,
+            ticks: {
+              font: { size: 10 },
+              autoSkip: false,
+              stepSize: 1000,
+              maxTicksLimit: 12
+            }
+          }
+        }
+      }
+    });
+  });
+}
+
+// アプリ起動時にデータ読み込み
+loadExpenses();
