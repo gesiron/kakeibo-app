@@ -59,7 +59,7 @@ async function loadExpenses() {
   let dataList = [];
   if (month === "all") {
     Object.values(monthlyData).forEach(arr => dataList.push(...arr));
-    dataList = dataList.filter(d => d.type === "記録"); // 全体表示では履歴非表示
+    dataList = dataList.filter(d => d.type === "記録");
   } else {
     dataList = monthlyData[month] || [];
   }
@@ -71,7 +71,7 @@ async function loadExpenses() {
     const delBtn = document.createElement("button");
     delBtn.textContent = "削除";
     delBtn.onclick = async () => {
-      const ok = confirm("この記録を削除してもよろしいですか？"); // ← 確認ダイアログ
+      const ok = confirm("この記録を削除してもよろしいですか？");
       if (!ok) return;
       await deleteDoc(doc(db, "expenses", data.id));
       loadExpenses();
@@ -113,7 +113,6 @@ let chartInstances = {};function drawCharts(monthlyData) {
     { id: "chart-electric", label: "電気", category: "電気", color: "orange" }
   ];
 
-  // 各カテゴリグラフ
   categories.forEach(({ id, label, category, color }) => {
     const totals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === category));
     if (chartInstances[id]) chartInstances[id].destroy();
@@ -127,19 +126,29 @@ let chartInstances = {};function drawCharts(monthlyData) {
       options: {
         responsive: true,
         plugins: {
-          title: { display: true, text: `${label}の月次推移`, font: { size: 39 } },
-          legend: { labels: { font: { size: 30 } } }
+          title: { display: true, text: `${label}の月次推移`, font: { size: 24 } },
+          legend: { labels: { font: { size: 16 } } }
         },
         scales: {
-          x: { ticks: { font: { size: 27 } } },
-          y: { ticks: { font: { size: 27 } } }
+          x: {
+            ticks: {
+              font: { size: 14 },
+              autoSkip: false,
+              maxTicksLimit: 12
+            }
+          },
+          y: {
+            ticks: {
+              font: { size: 14 },
+              autoSkip: false,
+              stepSize: 1000,
+              maxTicksLimit: 10
+            }
+          }
         }
       }
     });
-  });
-
-  // 収支・支出・副収入・貯金グラフ
-  const balanceTotals = months.map(m => sumBy(m, d => d.type === "収入") - sumBy(m, d => d.type === "支出"));
+  });  const balanceTotals = months.map(m => sumBy(m, d => d.type === "収入") - sumBy(m, d => d.type === "支出"));
   const expenseTotals = months.map(m => sumBy(m, d => d.type === "支出"));
   const sideTotals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === "副収入"));
   const savingTotals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === "貯金合計"));
@@ -159,12 +168,26 @@ let chartInstances = {};function drawCharts(monthlyData) {
       options: {
         responsive: true,
         plugins: {
-          title: { display: true, text: title, font: { size: 39 } },
-          legend: { labels: { font: { size: 30 } } }
+          title: { display: true, text: title, font: { size: 24 } },
+          legend: { labels: { font: { size: 16 } } }
         },
         scales: {
-          x: { ticks: { font: { size: 27 } } },
-          y: { min: 0, ticks: { font: { size: 27 } } }
+          x: {
+            ticks: {
+              font: { size: 14 },
+              autoSkip: false,
+              maxTicksLimit: 12
+            }
+          },
+          y: {
+            min: 0,
+            ticks: {
+              font: { size: 14 },
+              autoSkip: false,
+              stepSize: 1000,
+              maxTicksLimit: 10
+            }
+          }
         }
       }
     });
