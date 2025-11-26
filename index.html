@@ -12,8 +12,8 @@
       align-items: center;
     }
     #charts canvas {
-      width: 95% !important;
-      height: 400px !important; /* ← 縦幅を長めに確保 */
+      width: 600px !important;   /* ← 固定幅 */
+      height: 400px !important;  /* ← 固定高さ */
       margin: 15px 0;
     }
     h1 {
@@ -26,7 +26,8 @@
       h1 { font-size: 2em; }
       label, button, div { font-size: 1.2em; }
       #charts canvas {
-        height: 300px !important; /* ← スマホでは少し小さめに */
+        width: 100% !important;   /* ← スマホでは画面幅いっぱい */
+        height: 300px !important; /* ← 縦幅を少し抑える */
       }
     }
   </style>
