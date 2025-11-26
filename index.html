@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>家計簿アプリ</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    #charts {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+    #charts canvas {
+      width: 45% !important;
+      height: 600px !important; /* ← 高さを1.5倍に拡大 */
+      margin: 20px;
+    }
+    h1 {
+      font-size: 2.5em; /* ← タイトル文字も拡大 */
+    }
+    label, button, div {
+      font-size: 1.5em; /* ← 入力フォームや履歴文字も拡大 */
+    }
+  </style>
+</head>
+<body>
+  <h1>家計簿アプリ</h1>
+
+  <form id="expenseForm">
+    <label>日付: <input type="date" id="date" required></label><br>
+    <label>種別:
+      <select id="type" required>
+        <option value="収入">収入</option>
+        <option value="支出">支出</option>
+        <option value="記録">記録</option>
+      </select>
+    </label><br>
+    <label>カテゴリ: <input id="category" required></label><br>
+    <label>金額: <input type="number" id="amount" required></label><br>
+    <button type="submit">追加</button>
+  </form>
+
+  <div id="monthTabs"></div>
+  <div id="monthData"></div>
+
+  <div id="charts" style="display:none;">
+    <canvas id="chart-card"></canvas>
+    <canvas id="chart-cash"></canvas>
+    <canvas id="chart-insurance"></canvas>
+    <canvas id="chart-loan"></canvas>
+    <canvas id="chart-water"></canvas>
+    <canvas id="chart-kochi"></canvas>
+    <canvas id="chart-electric"></canvas> <!-- 電気料金グラフ -->
+    <canvas id="chart-balance"></canvas>
+    <canvas id="chart-expense"></canvas>
+    <canvas id="chart-side"></canvas>
+    <canvas id="chart-saving"></canvas>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
