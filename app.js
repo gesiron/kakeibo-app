@@ -105,6 +105,13 @@ function drawCharts(monthlyData) {
       .filter(predicate)
       .reduce((sum, d) => sum + (Number(d.amount) || 0), 0);
 
+  // ✅ PCとスマホでフォントサイズを切り替え
+  const isMobile = window.innerWidth <= 600;
+  const fontSizeX = isMobile ? 10 : 30;   // PCでは30px
+  const fontSizeY = isMobile ? 10 : 30;
+  const titleSize = isMobile ? 16 : 22;
+  const legendSize = isMobile ? 12 : 16;
+
   // recordOnly=true は「記録専用カテゴリ」
   const categories = [
     { id: "chart-card", label: "カード", category: "カード", color: "red", recordOnly: false },
@@ -117,10 +124,9 @@ function drawCharts(monthlyData) {
   ];
 
   categories.forEach(({ id, label, category, color, recordOnly }) => {
-    // recordOnly に応じて条件を切り替え
     const predicate = recordOnly
-      ? (d) => d.type === "記録" && d.category === category   // 記録専用カテゴリ
-      : (d) => d.category === category && d.type !== "記録";  // 収入/支出カテゴリ
+      ? (d) => d.type === "記録" && d.category === category
+      : (d) => d.category === category && d.type !== "記録";
 
     const totals = months.map(m => sumBy(m, predicate));
 
@@ -135,13 +141,13 @@ function drawCharts(monthlyData) {
       options: {
         responsive: true,
         plugins: {
-          title: { display: true, text: `${label}の月次推移`, font: { size: 20 } },
-          legend: { labels: { font: { size: 14 } } }
+          title: { display: true, text: `${label}の月次推移`, font: { size: titleSize } },
+          legend: { labels: { font: { size: legendSize } } }
         },
         scales: {
           x: {
             ticks: {
-              font: { size: 10 },
+              font: { size: fontSizeX },   // ✅ PCでは大きく
               autoSkip: false,
               maxRotation: 90,
               minRotation: 45
@@ -150,7 +156,7 @@ function drawCharts(monthlyData) {
           y: {
             beginAtZero: true,
             ticks: {
-              font: { size: 10 },
+              font: { size: fontSizeY },   // ✅ PCでは大きく
               autoSkip: false,
               maxTicksLimit: 12
             }
@@ -158,7 +164,9 @@ function drawCharts(monthlyData) {
         }
       }
     });
-  });   const balanceTotals = months.map(m => sumBy(m, d => d.type === "収入") - sumBy(m, d => d.type === "支出"));
+  });
+
+  const balanceTotals = months.map(m => sumBy(m, d => d.type === "収入") - sumBy(m, d => d.type === "支出"));
   const expenseTotals = months.map(m => sumBy(m, d => d.type === "支出"));
   const sideTotals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === "副収入"));
   const savingTotals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === "貯金合計"));
@@ -178,31 +186,31 @@ function drawCharts(monthlyData) {
       options: {
         responsive: true,
         plugins: {
-          title: { display: true, text: title, font: { size: 20 } },
-          legend: { labels: { font: { size: 14 } } }
+          title: { display: true, text: title, font: { size: titleSize } },
+          legend: { labels: { font: { size: legendSize } } }
         },
         scales: {
           x: {
             ticks: {
-              font: { size: 10 },
+              font: { size: fontSizeX },   // ✅ PCでは大きく
               autoSkip: false,
               maxRotation: 90,
               minRotation: 45
             }
           },
           y: {
-            beginAtZero: true,   // ← 支出グラフと同じ設定
+            beginAtZero: true,
             ticks: {
-              font: { size: 10 },
+              font: { size: fontSizeY },   // ✅ PCでは大きく
               autoSkip: false,
-              maxTicksLimit: 12   // ← Chart.js に任せて自動で金額を表示
+              maxTicksLimit: 12
             }
           }
         }
       }
     });
   });
-}
+}      // ← drawCharts の閉じ括弧
 
 // アプリ起動時にデータ読み込み
 loadExpenses();
