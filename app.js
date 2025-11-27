@@ -118,9 +118,9 @@ function drawCharts(monthlyData) {
     { id: "chart-cash", label: "現金", category: "現金", color: "brown", recordOnly: false },
     { id: "chart-insurance", label: "保険", category: "保険", color: "purple", recordOnly: false },
     { id: "chart-loan", label: "住宅ローン", category: "住宅ローン", color: "teal", recordOnly: false },
-    { id: "chart-electric", label: "電気", category: "電気", color: "orange", recordOnly: false },
+    { id: "chart-electric", label: "電気", category: "電気", color: "orange", recordOnly: true },
     { id: "chart-kochi", label: "こち", category: "こち", color: "olive", recordOnly: true },
-    { id: "chart-water", label: "水道", category: "水道", color: "dodgerblue", recordOnly: true }
+    { id: "chart-water", label: "水道", category: "水道", color: "dodgerblue", recordOnly: false }
   ];
 
   categories.forEach(({ id, label, category, color, recordOnly }) => {
