@@ -35,7 +35,7 @@
 <body>
   <h1>家計簿アプリ</h1>
 
- <form id="expenseForm">
+  <form id="expenseForm">
     <label>日付: <input type="date" id="date" required></label><br>
     <label>種別:
       <select id="type" required>
@@ -56,16 +56,17 @@
         <option value="給料">給料</option>
         <option value="副収入">副収入</option>
         <option value="貯金合計">貯金合計</option>
+        <option value="太陽光発電">太陽光発電</option> <!-- ✅ 追加 -->
       </select>
     </label><br>
     <label>金額: <input type="number" id="amount" required></label><br>
     <button type="submit">追加</button>
-</form>
+  </form>
 
-<div id="monthTabs"></div>
-<div id="monthData"></div>
+  <div id="monthTabs"></div>
+  <div id="monthData"></div>
 
-<div id="charts" style="display:none;">
+  <div id="charts" style="display:none;">
     <canvas id="chart-card"></canvas>
     <canvas id="chart-cash"></canvas>
     <canvas id="chart-insurance"></canvas>
@@ -77,8 +78,9 @@
     <canvas id="chart-expense"></canvas>
     <canvas id="chart-side"></canvas>
     <canvas id="chart-saving"></canvas>
-</div>
+    <canvas id="chart-solar"></canvas> <!-- ✅ 太陽光発電収入グラフ -->
+  </div>
 
-<script type="module" src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
