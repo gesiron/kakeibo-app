@@ -170,12 +170,16 @@ function drawCharts(monthlyData) {
   const expenseTotals = months.map(m => sumBy(m, d => d.type === "支出"));
   const sideTotals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === "副収入"));
   const savingTotals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === "貯金合計"));
+  // ✅ 太陽光発電収入の集計を追加
+  const solarTotals = months.map(m => sumBy(m, d => d.type === "収入" && d.category === "太陽光発電"));
 
   const chartDefs = [
     { id: "chart-balance", label: "収支（収入−支出）", data: balanceTotals, color: "black", title: "収支の月次推移" },
     { id: "chart-expense", label: "支出合計", data: expenseTotals, color: "darkgray", title: "支出の月次推移" },
     { id: "chart-side", label: "副収入推移", data: sideTotals, color: "green", title: "副収入の月次推移" },
-    { id: "chart-saving", label: "貯金合計", data: savingTotals, color: "blue", title: "貯金合計の月次推移" }
+    { id: "chart-saving", label: "貯金合計", data: savingTotals, color: "blue", title: "貯金合計の月次推移" },
+    // ✅ 太陽光発電収入グラフを追加
+    { id: "chart-solar", label: "太陽光発電収入", data: solarTotals, color: "gold", title: "太陽光発電収入の月次推移" }
   ];
 
   chartDefs.forEach(({ id, label, data, color, title }) => {
@@ -210,7 +214,7 @@ function drawCharts(monthlyData) {
       }
     });
   });
-}      // ← drawCharts の閉じ括弧
+} // ← drawCharts の閉じ括弧
 
 // アプリ起動時にデータ読み込み
 loadExpenses();
