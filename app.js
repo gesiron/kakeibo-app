@@ -169,7 +169,16 @@ function drawCharts(monthlyData) {
   const balanceTotals = months.map(m => sumBy(m, d => d.type === "収入") - sumBy(m, d => d.type === "支出"));
   const expenseTotals = months.map(m => sumBy(m, d => d.type === "支出"));
   const sideTotals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === "副収入"));
-  const savingTotals = months.map(m => sumBy(m, d => d.type === "記録" && d.category === "貯金合計"));
+ let lastValue = null;
+const savingTotals = months.map(m => {
+  const value = sumBy(m, d => d.type === "記録" && d.category === "貯金合計");
+  if (value > 0) {
+    lastValue = value;   // 入力がある月は更新
+    return value;
+  } else {
+    return lastValue;    // 入力がない月は直前の値をコピー
+  }
+});
   // ✅ 太陽光発電収入の集計を追加
   const solarTotals = months.map(m => sumBy(m, d => d.type === "収入" && d.category === "太陽光発電"));
 
@@ -182,39 +191,48 @@ function drawCharts(monthlyData) {
     { id: "chart-solar", label: "太陽光発電収入", data: solarTotals, color: "gold", title: "太陽光発電収入の月次推移" }
   ];
 
-  chartDefs.forEach(({ id, label, data, color, title }) => {
-    if (chartInstances[id]) chartInstances[id].destroy();
-    new Chart(document.getElementById(id).getContext("2d"), {
-      type: "line",
-      data: { labels: months, datasets: [{ label, data, borderColor: color, fill: false }] },
-      options: {
-        responsive: true,
-        plugins: {
-          title: { display: true, text: title, font: { size: titleSize } },
-          legend: { labels: { font: { size: legendSize } } }
+ chartDefs.forEach(({ id, label, data, color, title }) => {
+  if (chartInstances[id]) chartInstances[id].destroy();
+  new Chart(document.getElementById(id).getContext("2d"), {
+    type: "line",
+    data: { labels: months, datasets: [{ label, data, borderColor: color, fill: false }] },
+    options: {
+      responsive: true,
+      plugins: {
+        title: { display: true, text: title, font: { size: titleSize } },
+        legend: { labels: { font: { size: legendSize } } }
+      },
+      scales: {
+        x: {
+          ticks: {
+            font: { size: fontSizeX },
+            autoSkip: false,
+            maxRotation: 90,
+            minRotation: 45
+          }
         },
-        scales: {
-          x: {
-            ticks: {
-              font: { size: fontSizeX },   // ✅ PCでは大きく
-              autoSkip: false,
-              maxRotation: 90,
-              minRotation: 45
-            }
+        y: {
+          beginAtZero: true,
+          ticks: {
+            font: { size: fontSizeY },
+            autoSkip: false,
+            maxTicksLimit: 12
           },
-          y: {
-            beginAtZero: true,
-            ticks: {
-              font: { size: fontSizeY },   // ✅ PCでは大きく
-              autoSkip: false,
-              maxTicksLimit: 12
+          grid: {
+            color: (ctx) => {
+              // ✅ 収支グラフだけ y=0 を赤、それ以外は灰色
+              if (ctx.tick.value === 0 && id === "chart-balance") {
+                return "red";
+              }
+              return "#ccc";
             }
           }
         }
       }
-    });
+    }
   });
-} // ← drawCharts の閉じ括弧
+}); // ← forEach の閉じ
+}    // ← drawCharts の閉じ
 
 // アプリ起動時にデータ読み込み
 loadExpenses();
