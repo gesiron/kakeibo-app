@@ -35,7 +35,7 @@
 <body>
   <h1>家計簿アプリ</h1>
 
-  <form id="expenseForm">
+ <form id="expenseForm">
     <label>日付: <input type="date" id="date" required></label><br>
     <label>種別:
       <select id="type" required>
@@ -44,15 +44,28 @@
         <option value="記録">記録</option>
       </select>
     </label><br>
-    <label>カテゴリ: <input id="category" required></label><br>
+    <label>カテゴリ:
+      <select id="category" required>
+        <option value="カード">カード</option>
+        <option value="現金">現金</option>
+        <option value="保険">保険</option>
+        <option value="住宅ローン">住宅ローン</option>
+        <option value="水道">水道</option>
+        <option value="こち">こち</option>
+        <option value="電気">電気</option>
+        <option value="給料">給料</option>
+        <option value="副収入">副収入</option>
+        <option value="貯金合計">貯金合計</option>
+      </select>
+    </label><br>
     <label>金額: <input type="number" id="amount" required></label><br>
     <button type="submit">追加</button>
-  </form>
+</form>
 
-  <div id="monthTabs"></div>
-  <div id="monthData"></div>
+<div id="monthTabs"></div>
+<div id="monthData"></div>
 
-  <div id="charts" style="display:none;">
+<div id="charts" style="display:none;">
     <canvas id="chart-card"></canvas>
     <canvas id="chart-cash"></canvas>
     <canvas id="chart-insurance"></canvas>
@@ -64,8 +77,8 @@
     <canvas id="chart-expense"></canvas>
     <canvas id="chart-side"></canvas>
     <canvas id="chart-saving"></canvas>
-  </div>
+</div>
 
-  <script type="module" src="app.js"></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>
