@@ -113,15 +113,16 @@ function drawCharts(monthlyData) {
   const legendSize = isMobile ? 12 : 16;
 
   // recordOnly=true は「記録専用カテゴリ」
-  const categories = [
-    { id: "chart-card", label: "カード", category: "カード", color: "red", recordOnly: false },
-    { id: "chart-cash", label: "現金", category: "現金", color: "brown", recordOnly: false },
-    { id: "chart-insurance", label: "保険", category: "保険", color: "purple", recordOnly: false },
-    { id: "chart-loan", label: "住宅ローン", category: "住宅ローン", color: "teal", recordOnly: false },
-    { id: "chart-electric", label: "電気", category: "電気", color: "orange", recordOnly: true },
-    { id: "chart-kochi", label: "こち", category: "こち", color: "olive", recordOnly: true },
-    { id: "chart-water", label: "水道", category: "水道", color: "dodgerblue", recordOnly: false }
-  ];
+ const categories = [
+  { id: "chart-card", label: "カード", category: "カード", color: "red", recordOnly: false },
+  { id: "chart-cash", label: "現金", category: "現金", color: "brown", recordOnly: false },
+  { id: "chart-insurance", label: "保険", category: "保険", color: "purple", recordOnly: false },
+  { id: "chart-loan", label: "住宅ローン", category: "住宅ローン", color: "teal", recordOnly: false },
+  { id: "chart-electric", label: "電気", category: "電気", color: "orange", recordOnly: true },
+  { id: "chart-kochi", label: "こち", category: "こち", color: "olive", recordOnly: true },
+  { id: "chart-water", label: "水道", category: "水道", color: "dodgerblue", recordOnly: false },
+  { id: "chart-tobacco", label: "タバコ", category: "タバコ", color: "gray", recordOnly: true } // ✅ ここを追加
+];
 
   categories.forEach(({ id, label, category, color, recordOnly }) => {
     const predicate = recordOnly
@@ -236,3 +237,4 @@ const savingTotals = months.map(m => {
 
 // アプリ起動時にデータ読み込み
 loadExpenses();
+
