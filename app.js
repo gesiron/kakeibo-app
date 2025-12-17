@@ -120,7 +120,7 @@ function drawCharts(monthlyData) {
   { id: "chart-loan", label: "住宅ローン", category: "住宅ローン", color: "teal", recordOnly: false },
   { id: "chart-electric", label: "電気", category: "電気", color: "orange", recordOnly: true },
   { id: "chart-kochi", label: "こち", category: "こち", color: "olive", recordOnly: true },
-  { id: "chart-water", label: "水道", category: "水道", color: "dodgerblue", recordOnly: false },
+  { id: "chart-water", label: "水道", category: "水道", color: "dodgerblue", recordOnly: true },
   { id: "chart-tobacco", label: "タバコ", category: "タバコ", color: "gray", recordOnly: true } // ✅ ここを追加
 ];
 
@@ -237,4 +237,3 @@ const savingTotals = months.map(m => {
 
 // アプリ起動時にデータ読み込み
 loadExpenses();
-
