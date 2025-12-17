@@ -212,24 +212,23 @@ const savingTotals = months.map(m => {
             minRotation: 45
           }
         },
-        y: {
-          beginAtZero: true,
-          ticks: {
-            font: { size: fontSizeY },
-            autoSkip: false,
-            maxTicksLimit: 12
-          },
-          grid: {
-            color: (ctx) => {
-              // ✅ 収支グラフだけ y=0 を赤、それ以外は灰色
-              if (ctx.tick.value === 0 && id === "chart-balance") {
-                return "red";
-              }
-              return "#ccc";
-            }
-          }
-        }
+       y: {
+  beginAtZero: false,   // ★ 0 から始めない
+  suggestedMin: Math.min(...data) * 0.95,  // ★ 最小値を少し下げて設定
+  ticks: {
+    font: { size: fontSizeY },
+    autoSkip: false,
+    maxTicksLimit: 12
+  },
+  grid: {
+    color: (ctx) => {
+      if (ctx.tick.value === 0 && id === "chart-balance") {
+        return "red";
       }
+      return "#ccc";
+    }
+  }
+}   }
     }
   });
 }); // ← forEach の閉じ
