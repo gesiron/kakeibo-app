@@ -22,8 +22,8 @@ form.addEventListener("submit", async (e) => {
   const type = document.getElementById("type").value;
   const category = document.getElementById("category").value;
   const amount = parseInt(document.getElementById("amount").value);
-  await addDoc(collection(db, "expenses"), { date, type, category, amount });
-  loadExpenses();
+  const memo = document.getElementById("memo").value;
+  await addDoc(collection(db, "expenses"), { date, type, category, amount, memo });
 });
 
 async function loadExpenses() {
@@ -70,7 +70,8 @@ if (month === "all") {
   let total = 0;
   dataList.forEach(data => {
     const div = document.createElement("div");
-    div.textContent = `${data.date} | ${data.type} | ${data.category} | ${data.amount}円`;
+   div.textContent = `${data.date} | ${data.type} | ${data.category} | ${data.amount}円` +
+                  (data.memo ? ` | メモ: ${data.memo}` : "");
     const delBtn = document.createElement("button");
     delBtn.textContent = "削除";
     delBtn.onclick = async () => {
