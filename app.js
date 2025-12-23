@@ -56,12 +56,15 @@ async function loadExpenses() {
   const container = document.getElementById("monthData");
   container.innerHTML = "";
 
-  let dataList = [];
- if (month === "all") {
+ let dataList = [];
+if (month === "all") {
   // 全体では一覧を表示しない
-  dataList = [];   // ← 空にする
+  dataList = [];
 } else {
   dataList = monthlyData[month] || [];
+
+  // ★ 2025-11 など「その月の中」を日付昇順に並べる
+  dataList.sort((a, b) => a.date.localeCompare(b.date));
 }
 
   let total = 0;
