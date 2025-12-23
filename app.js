@@ -14,15 +14,39 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// ★ ここに追加する
+const typeMap = {
+  "カード": "支出",
+  "現金": "支出",
+  "保険": "支出",
+  "住宅ローン": "支出",
+  "タバコ": "記録",
+  "電気": "記録",
+  "水道": "記録",
+  "こち": "記録",
+  "副収入": "記録",
+  "貯金合計": "記録",
+  "給料": "収入",
+  "太陽光発電": "収入"
+};
+
+
 const form = document.getElementById("expenseForm");
+form.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();  // ★ Enter で送信されるのを止める
+  }
+});
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
   const date = document.getElementById("date").value;
-  const type = document.getElementById("type").value;
-  const category = document.getElementById("category").value;
+  const category = document.getElementById("category").value;  // ★ 先に category を取る
+  const type = typeMap[category];  // ★ その後で type を決める
   const amount = parseInt(document.getElementById("amount").value);
   const memo = document.getElementById("memo").value;
+
   await addDoc(collection(db, "expenses"), { date, type, category, amount, memo });
 });
 
