@@ -24,7 +24,7 @@ const typeMap = {
   "電気": "記録",
   "水道": "記録",
   "こち": "記録",
-  "副収入": "記録",
+  "副収入": "収入",
   "貯金合計": "記録",
   "給料": "収入",
   "太陽光発電": "収入",
@@ -269,3 +269,5 @@ const nisaProfitTotals = months.map(m =>
 
 // アプリ起動時にデータ読み込み
 loadExpenses();
+loadExpenses();
+
