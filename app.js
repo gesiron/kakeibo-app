@@ -198,7 +198,7 @@ function drawCharts(monthlyData) {
 
   const balanceTotals = months.map(m => sumBy(m, d => d.type === "収入") - sumBy(m, d => d.type === "支出"));
   const expenseTotals = months.map(m => sumBy(m, d => d.type === "支出"));
-  const sideTotals = months.map(m => sumBy(m, d => d.type === "収入S" && d.category === "副収入"));
+  const sideTotals = months.map(m => sumBy(m, d => d.type === "収入" && d.category === "副収入"));
  let lastValue = null;
 const savingTotals = months.map(m => {
   const value = sumBy(m, d => d.type === "記録" && d.category === "貯金合計");
@@ -269,3 +269,4 @@ const nisaProfitTotals = months.map(m =>
 
 // アプリ起動時にデータ読み込み
 loadExpenses();
+
