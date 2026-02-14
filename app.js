@@ -29,6 +29,8 @@ const typeMap = {
   "給料": "収入",
   "太陽光発電": "収入",
   "NISA利益": "記録",
+  "しげ娯楽": "記録",
+"ぽん娯楽": "記録",
 };
 
 
@@ -150,7 +152,9 @@ function drawCharts(monthlyData) {
   { id: "chart-electric", label: "電気", category: "電気", color: "orange", recordOnly: true },
   { id: "chart-kochi", label: "こち", category: "こち", color: "olive", recordOnly: true },
   { id: "chart-water", label: "水道", category: "水道", color: "dodgerblue", recordOnly: true },
-  { id: "chart-tobacco", label: "タバコ", category: "タバコ", color: "gray", recordOnly: true } // ✅ ここを追加
+  { id: "chart-tobacco", label: "タバコ", category: "タバコ", color: "gray", recordOnly: true },// ✅ ここを追加
+  { id: "chart-shige", label: "しげ娯楽", category: "しげ娯楽", color: "magenta", recordOnly: true },
+{ id: "chart-pon", label: "ぽん娯楽", category: "ぽん娯楽", color: "cyan", recordOnly: true },
 ];
 
   categories.forEach(({ id, label, category, color, recordOnly }) => {
@@ -269,4 +273,3 @@ const nisaProfitTotals = months.map(m =>
 
 // アプリ起動時にデータ読み込み
 loadExpenses();
-
