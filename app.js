@@ -31,6 +31,7 @@ const typeMap = {
   "NISA利益": "記録",
   "しげ娯楽": "記録",
 "ぽん娯楽": "記録",
+  "転売利益": "記録",
 "ポイ活利益": "記録",
 };
 
@@ -156,6 +157,7 @@ function drawCharts(monthlyData) {
   { id: "chart-tobacco", label: "タバコ", category: "タバコ", color: "gray", recordOnly: true },// ✅ ここを追加
   { id: "chart-shige", label: "しげ娯楽", category: "しげ娯楽", color: "magenta", recordOnly: true },
 { id: "chart-pon", label: "ぽん娯楽", category: "ぽん娯楽", color: "cyan", recordOnly: true },
+   { id: "chart-profit", label: "転売利益", category: "転売利益", color: "darkgreen", recordOnly: true },
 { id: "chart-poikatsu", label: "ポイ活利益", category: "ポイ活利益", color: "goldenrod", recordOnly: true },
 ];
 
