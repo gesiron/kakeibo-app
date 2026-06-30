@@ -204,7 +204,9 @@ function drawCharts(monthlyData) {
 
   const balanceTotals = months.map(m => sumBy(m, d => d.type === "収入") - sumBy(m, d => d.type === "支出"));
   const expenseTotals = months.map(m => sumBy(m, d => d.type === "支出"));
-  const sideTotals = months.map(m => sumBy(m, d => d.type === "収入" && d.category === "副収入"));
+  const sideTotals = months.map(m =>
+  sumBy(m, d => d.type === "収入" && d.category === "転売売り上げ")
+);
  let lastValue = null;
 const savingTotals = months.map(m => {
   const value = sumBy(m, d => d.type === "記録" && d.category === "貯金合計");
@@ -224,7 +226,7 @@ const nisaProfitTotals = months.map(m =>
   const chartDefs = [
     { id: "chart-balance", label: "収支（収入−支出）", data: balanceTotals, color: "black", title: "収支の月次推移" },
     { id: "chart-expense", label: "支出合計", data: expenseTotals, color: "darkgray", title: "支出の月次推移" },
-    { id: "chart-side", label: "副収入推移", data: sideTotals, color: "green", title: "副収入の月次推移" },
+    { id: "chart-side", label: "転売売り上げ", data: sideTotals, color: "green", title: "転売売り上げ" },
     { id: "chart-saving", label: "貯金合計", data: savingTotals, color: "blue", title: "貯金合計の月次推移" },
     // ✅ 太陽光発電収入グラフを追加
     { id: "chart-solar", label: "太陽光発電収入", data: solarTotals, color: "gold", title: "太陽光発電収入の月次推移" },
