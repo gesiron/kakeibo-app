@@ -119,6 +119,19 @@ if (month === "all") {
   const summary = document.createElement("div");
   summary.textContent = `${month === "all" ? "全体" : month} の収支合計: ${total}円`;
   container.appendChild(summary);
+  // ★ しげ出費（しげ娯楽 + タバコ）の合計
+let shigeTotal = 0;
+dataList.forEach(data => {
+  if (data.category === "しげ娯楽" || data.category === "タバコ") {
+    shigeTotal += Number(data.amount) || 0;
+  }
+});
+
+// ★ 表示
+const shigeSummary = document.createElement("div");
+shigeSummary.textContent = `しげ出費合計: ${shigeTotal}円`;
+container.appendChild(shigeSummary);
+
 
   if (month === "all") {
     document.getElementById("charts").style.display = "block";
