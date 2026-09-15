@@ -238,6 +238,13 @@ const savingTotals = months.map(m => {
 const nisaProfitTotals = months.map(m =>
   sumBy(m, d => d.category === "NISA利益")
 );
+  // ★ しげ出費（しげ娯楽 + タバコ）の月次合計
+const shigeExpenseTotals = months.map(m =>
+  sumBy(m, d =>
+    d.category === "しげ娯楽" || d.category === "タバコ"
+  )
+);
+
   const chartDefs = [
     { id: "chart-balance", label: "収支（収入−支出）", data: balanceTotals, color: "black", title: "収支の月次推移" },
     { id: "chart-expense", label: "支出合計", data: expenseTotals, color: "darkgray", title: "支出の月次推移" },
@@ -247,6 +254,13 @@ const nisaProfitTotals = months.map(m =>
     { id: "chart-solar", label: "太陽光発電収入", data: solarTotals, color: "gold", title: "太陽光発電収入の月次推移" },
     { id: "chart-nisa-profit", label: "NISA利益", data: nisaProfitTotals, color: "red", title: "NISA利益の月次推移" }
    ];
+chartDefs.push({
+  id: "chart-shige-expense",
+  label: "しげ出費",
+  data: shigeExpenseTotals,
+  color: "hotpink",
+  title: "しげ出費（しげ娯楽＋タバコ）"
+});
 
  chartDefs.forEach(({ id, label, data, color, title }) => {
   if (chartInstances[id]) chartInstances[id].destroy();
